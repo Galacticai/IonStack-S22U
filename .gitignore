@@ -11,10 +11,11 @@ buildroot-tc/
 __pycache__/
 *.pyc
 
+# intermediates are included to avoid downloading the whole AP just to generate them
 # Generator intermediates
-target_generator/kallsyms
-target_generator/kallsyms.txt
-target_generator/config.txt
+# target_generator/kallsyms
+# target_generator/kallsyms.txt
+# target_generator/config.txt
 
 # Test targets / QEMU test environments
 tests-targets/
