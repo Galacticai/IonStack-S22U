@@ -4,6 +4,10 @@ https://github.com/user-attachments/assets/f3d0858d-f8f5-444f-8ae5-541c2bc744c3
 
 <table>
   <tr>
+    <td><img alt="KernelSU Next Screenshot" src="https://github.com/user-attachments/assets/b560d581-047c-423a-9d94-d5ab09e1b76a" width="300"/></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><img src="https://github.com/user-attachments/assets/9f687fdd-04bc-4ba7-88fe-6ccc26df6253" width="300"></td>
     <td><img src="https://github.com/user-attachments/assets/8837b552-bd18-45f5-9780-94e857b48d33" width="300"></td>
   </tr>
@@ -42,6 +46,7 @@ This port is based on the exploit implementation published in:
 - Upstream revision used as the porting base: `b850d3bddc74c3328d5fbcc0568d21962b55d949`
 
 Special thanks to:
+
 - [F-19-F/IonStackQuest3](https://github.com/F-19-F/IonStackQuest3)
 
 The upstream Apache License 2.0 is retained in [LICENSE](LICENSE).
@@ -73,6 +78,7 @@ make PROJECT=S908WVLSAGZE3 clean preload root-helper
 ```
 
 To build for a QEMU environment running the Android kernel with a Buildroot filesystem:
+
 - **Buildroot Toolchain Release**: Download toolchain from [sarabpal-dev/qemu Release (samsung-v1)](https://github.com/sarabpal-dev/qemu/releases/tag/samsung-v1)
 - **QEMU Kernel Execution Guide**: Setup and run guide at [QEMU Samsung README](https://github.com/sarabpal-dev/qemu/blob/samsung/docs/samsung/README.md)
 
@@ -146,7 +152,7 @@ Verified result on `S908WVLSAGZE3`:
 Interactive root shell session:
 
 ```text
-b0q:/data/local/tmp $ ./cve-2026-43499-root                              
+b0q:/data/local/tmp $ ./cve-2026-43499-root
 :/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:kernel:s0
 :/ # getenforce
@@ -187,6 +193,7 @@ Since this is a late-loaded LKM (not a patched boot image), it does not survive 
 
 > [!TIP]
 > **Stability & Success Rate Recommendations:**
+>
 > - **Reboot Device**: For the highest success rate, reboot the device before running the exploit to ensure clean slab/heap state.
 > - **Close Background Apps**: Ensure all background applications are closed.
 > - **Unlock Screen & Stay Idle**: Keep the device unlocked and do not interact with or use the phone while the exploit is running, as active user input/background tasks can disturb timing and potentially trigger a kernel panic.
